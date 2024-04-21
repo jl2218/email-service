@@ -5,10 +5,14 @@ import com.amazonaws.services.simpleemail.model.*;
 import com.faria.emailservice.adapters.EmailSenderGateway;
 import com.faria.emailservice.core.exceptions.EmailServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SesEmailSender implements EmailSenderGateway {
+
+    @Value("${email}")
+    private String email;
 
     private final AmazonSimpleEmailService amazonSimpleEmailService;
 
@@ -20,7 +24,7 @@ public class SesEmailSender implements EmailSenderGateway {
     @Override
     public void sendEmail(String to, String subject, String body) {
         SendEmailRequest request = new SendEmailRequest()
-                .withSource("joaopedropepe56@gmail.com")
+                .withSource(email)
                 .withDestination(new Destination().withToAddresses(to))
                 .withMessage(new Message()
                         .withSubject(new Content(subject))
